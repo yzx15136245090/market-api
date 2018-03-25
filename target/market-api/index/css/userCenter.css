@@ -1,0 +1,514 @@
+/*�û�����*/
+section{
+    width: 100%;
+    background: #f0f1f2;
+    padding: 20px 0;
+
+}
+#main{
+    overflow: hidden;
+}
+.myApp{
+    width: 225px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    background: #fff;
+    float: left;
+}
+.myApp ul li{
+    height: 40px;
+    line-height: 40px;
+    color: #333;
+    padding-left: 40px;
+}
+.myApp ul li a:hover{
+    color: #36a5dd;
+}
+.myApp ul li.title{
+    height: 50px;
+    line-height: 50px;
+    background: #e8e8e8;
+    padding-left: 20px;
+    font-size: 16px;
+    color: #000;
+}
+.myApp ul li.curr{
+    background: #36a5dd;
+}
+.myApp ul li.curr a{
+    color: #fff;
+}
+#accountInfo,#stuCertification,#changePwd,#IntegralRule,#commodityRule,#myShoppingCart,#myRelease,#myOrder,#myCollection,#shelfGoods{
+    width: 935px;
+    float: right;
+    box-sizing: border-box;
+    display: none;
+}
+#userCenter{
+    width: 935px;
+    float: right;
+    box-sizing: border-box;
+}
+#userCenter .baseInfo{
+    height: 200px;
+    border: 2px solid #3c83c5;
+    background: #ddeef6;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+#userCenter .baseInfo .changeHeadImg{
+    width: 140px;
+    margin:0 20px;
+    float: left;
+}
+#userCenter .baseInfo .changeHeadImg .headImg{
+    background: #fff;
+    padding: 10px;
+}
+#userCenter .baseInfo .changeHeadImg p{
+    text-align: center;
+    line-height: 40px;
+}
+#userCenter .baseInfo .userInfo{
+    float: left;
+    width: 700px;
+    margin-left: 20px;
+}
+#userCenter .baseInfo .userInfo p{
+    line-height: 32px;
+    border-bottom:  1px dashed #ccc;
+    color: #808080;
+}
+#userCenter .baseInfo .userInfo p:last-child{
+    border-bottom: 0;
+}
+#userCenter .baseInfo .userInfo p span{
+    color: #000;
+}
+#userCenter .baseInfo .userInfo p i{
+    color: #FF0700;
+}
+#userCenter .myPro{
+    background: #fff;
+    height: 85px;
+    margin-top: 40px;
+}
+#userCenter .myPro table{
+    margin: 0 100px;
+    padding-top: 10px;
+}
+#userCenter .myPro td{
+    width: 150px;
+    text-align: center;
+    line-height: 30px;
+}
+#userCenter .myPro td i{
+    color: #36a5dd;
+}
+#userCenter>span{
+    color: #ff0000;
+    float: right;
+    line-height: 40px;
+}
+
+#main > .curr{
+    display: block;
+}
+section h2{
+    font-size: 20px;
+    font-weight: normal;
+    color: #3c83c5;
+    height: 48px;
+    line-height: 48px;
+    border-bottom: 2px solid #36a5dd;
+    padding-left: 20px;
+    background: #FFF;
+    margin-bottom: 20px;
+}
+/*.baseInfo,.transaction,.stu,.pwdQues{*/
+    /*border: 1px solid #36a5dd;*/
+    /*overflow: hidden;*/
+    /*margin-top: 20px;*/
+/*}*/
+/*�˻���Ϣ*/
+.baseInfo,.stuCertification,.changePwd,#myShoppingCart ul,.integralCorrelation,.commodityRule,.myShoppingCart,.myRelease{
+    background: #fff;
+    overflow: hidden;
+    margin-top: 20px;
+    padding: 20px 0;
+}
+.userLeft,.userRight{
+    width: 467.5px;
+    float: left;
+}
+.userLeft p{
+    line-height: 30px;
+    margin:20px 0;
+}
+.userLeft p label{
+    display: inline-block;
+    width: 130px;
+    text-align: right;
+    height: 30px;
+    margin-right: 20px;
+}
+.userLeft p input{
+    padding-left: 5px;
+    height: 30px;
+    width: 300px;
+}
+.userLeft>a{
+    display: block;
+    text-align: center;
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    background: #3c83c5;
+    color: #fff;
+    font-size: 18px;
+    border: 0;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+.userRight .headImg{
+    border:1px solid #8bc3f7;
+    width: 140px;
+    height: 140px;
+    margin: 30px auto 10px;
+}
+.userRight .headImg img{
+    margin: 10px;
+}
+.userRight p{
+    text-align: center;
+}
+/*ѧ����֤���޸�����*/
+.stuCertification>p{
+    width: 768px;
+    margin: 20px auto;
+    padding: 10px 30px;
+    line-height: 25px;
+    border: 1px solid #3c83c5;
+}
+.stuCertification form p,.changePwd form p{
+    margin:20px auto;
+}
+.stuCertification form label,.changePwd form label{
+    display: inline-block;
+    width: 150px;
+    text-align: right;
+    line-height: 30px;
+    margin-right: 20px;
+}
+.stuCertification form input,.changePwd form input{
+    height: 30px;
+    width: 300px;
+    padding-left: 5px;
+}
+.stuCertification form p button{
+    width: 120px;
+    height: 23px;
+    color: #fff;
+    background: #36a5dd;
+    border: 0;
+}
+.stuCertification form p span{
+    color: #ff0000;
+    margin-left: 20px;
+}
+.stuCertification form>span{
+    color: #8e8e8e;
+    font-size: 12px;
+    margin-left: 170px;
+    position: relative;
+    top:-20px;
+}
+.stuCertification form>button,.changePwd form>button{
+    display: block;
+    width: 120px;
+    height: 40px;
+    color: #fff;
+    background: #3c83c5;
+    border: 0;
+    border-radius: 10px;
+    margin-left: 175px;
+}
+/*************************�ҵĹ��ﳵ,�ҵĶ���,�ҵ��ղ�*/
+.myShoppingCart table{
+    width: 895px;
+    border: 1px solid #ddd;
+    margin: 10px 20px;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.myShoppingCart table th{
+    height: 40px;
+    line-height: 40px;
+    background: #f0f1f2;
+    border: 0.5px solid #ddd;
+}
+.myShoppingCart table th:first-child,.myShoppingCart table td:first-child{
+    width: 60%;
+}
+.myShoppingCart table th:last-child,.myShoppingCart table td:last-child{
+    width: 20%;
+}
+.myShoppingCart table td{
+    border: 1px solid #ddd;
+    height: 100px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.myShoppingCart table .pic{
+    float: left;
+    width: 70px;
+    height: 70px;
+    margin: 15px;
+    box-sizing: border-box;
+    border:1px solid #FF0700;
+}
+.myShoppingCart table .pic img{
+    margin: 10px;
+    width: 50px;
+    height: 50px;
+}
+.myShoppingCart table div{
+    padding:10px;
+    float: left;
+}
+.myShoppingCart table div p{
+    line-height: 40px;
+}
+.myShoppingCart table div p.owner{
+    color: #808080;
+}
+.myShoppingCart table .price{
+    color: #ff0000;
+    font-size: 16px;
+    text-align: center;
+}
+.myShoppingCart table td:last-child button{
+    display: block;
+    background: #3c83c5;
+    width: 120px;
+    height: 30px;
+    color: #fff;
+    border:0;
+    border-radius: 8px;
+    margin: 12px auto;
+
+}
+.myShoppingCart table td:last-child a{
+    display: block;
+    color: #ff0000;
+    text-align: center;
+}
+.myShoppingCart>p{
+    text-align: center;
+}
+.myShoppingCart>p>a{
+    display: inline-block;
+    width: 65px;
+    height: 30px;
+    border: 1px solid #999797;
+    border-radius: 5px;
+    color: #4d4d4d;
+    text-align: center;
+    line-height: 30px;
+    margin: 10px;
+}
+.myShoppingCart>p>a.curr{
+    background: #3c83c5;
+    color: #fff;
+}
+/******************************�ҵĶ���*/
+#myOrder h2 li{
+    display: inline-block;
+}
+#myOrder h2 li a{
+    display: inline-block;
+    margin-right: 10px;
+    width: 140px;
+    height: 35px;
+    line-height:35px;
+    text-align: center;
+    color: #323232;
+    font-size: 18px;
+    border-radius: 10px 10px 0 0;
+    background: #fefefe;
+    position: relative;
+    top:3px;
+}
+#myOrder h2 li.curr a{
+    background: #3c83c5;
+    color: #fff;
+}
+#myOrder .myShoppingCart{
+    display: none;
+}
+#myOrder>.curr{
+    display: block;
+}
+/***********************��ֹ���************/
+.integralCorrelation{
+    padding-left: 80px;
+}
+.jfgz{
+    padding-top: 20px;
+}
+.jfgz p{
+    margin-left: 90px;
+    line-height: 30px;
+}
+.jfmx{
+    margin-top: 10px;
+    overflow: hidden;
+}
+.jfmx span{
+    float: left;
+}
+.jfgz>span,.jfmx>span{
+    font-size: 18px;
+    color: #3c83c5;
+}
+.jfmx table{
+    float: left;
+}
+/********************��Ʒ����**********************/
+.jfmx table,#commodityRule table{
+    width: 670px;
+    border: 1px solid #dddddd;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+    line-height: 30px;
+
+}
+#commodityRule table{
+    margin: 20px auto;
+}
+.jfmx table th,#commodityRule table th{
+    background: #36a5dd;
+    color: #fff;
+    border:0.5px solid #ddd;
+    text-align: center;
+}
+#commodityRule table{
+    margin-top: 20px;
+}
+.jfmx table  td,#commodityRule table td{
+    border: 1px solid #ddd;
+    padding-left: 20px;
+}
+#commodityRule table td{
+    height: 50px;
+    width: 50%;
+    margin: 0;
+}
+
+/*******************************�ҵķ���*/
+#myRelease h2 a{
+    float: right;
+    width: 120px;
+    height: 30px;
+    line-height: 30px;
+    font-weight: normal;
+    text-align: center;
+    background: #3c83c5;
+    color: #fff;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+.myRelease ul{
+    text-align: center;
+    margin-left:20px;
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+.pagination>li {
+    display: inline;
+}
+.pagination>li>a, .pagination>li>span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+.pagination {
+    display: inline-block;
+    padding-left: 0;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+.myRelease ul li {
+	display: inline-block;
+    text-align: left;
+    float:left;
+    width: 224px;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 2px solid #999999;
+    margin: 0 18px 20px 0;
+}
+#myRelease ul li img{
+ 
+    width: 185px;
+    height: 185px;
+    margin: 0 auto;
+    border: 1px solid #FF0700;
+}
+#myRelease ul li p{
+    line-height: 30px;
+    margin-left: 10px;
+}
+#myRelease ul li p span{
+    color: #FF0700;
+}
+#myRelease ul li p.title{
+    font-size: 18px;
+}
+#myRelease ul li div{
+    background: #fff;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+}
+#myRelease ul li div button{
+    width: 29%;
+    height: 30px;
+    float: left;
+    background: #fff;
+    border: 1px solid #ccc;
+    margin: 15px 5px;
+}
+.myRelease>p{
+    text-align: center;
+}
+.myRelease>p>a{
+    display: inline-block;
+    width: 65px;
+    height: 30px;
+    border: 1px solid #999797;
+    border-radius: 5px;
+    color: #4d4d4d;
+    text-align: center;
+    line-height: 30px;
+    margin: 10px;
+}
+.myRelease>p>a.curr{
+    background: #3c83c5;
+    color: #fff;
+}
+

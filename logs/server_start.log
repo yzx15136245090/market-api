@@ -1,0 +1,29 @@
+[WARN ][2018/03/17 19:33:13524][com.alibaba.dubbo.remoting.exchange.support.header.HeartBeatTask.run(HeartBeatTask.java:71)]
+ [DUBBO] Close channel HeaderExchangeClient [channel=com.alibaba.dubbo.remoting.transport.netty.NettyClient [/192.168.0.105:23286 -> /192.168.0.105:20880]], because heartbeat read idle time out: 180000ms, dubbo version: 2.5.3, current host: 192.168.0.105
+ [INFO ][2018/03/17 19:33:13552][org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1096)]
+Client session timed out, have not heard from server in 8944924ms for sessionid 0x16200c0b634004f, closing socket connection and attempting reconnect
+ [INFO ][2018/03/17 19:33:13557][com.alibaba.dubbo.rpc.protocol.dubbo.DubboProtocol$1.disconnected(DubboProtocol.java:130)]
+ [DUBBO] disconected from /192.168.0.105:20880,url:dubbo://192.168.0.105:20880/com.zzti.market.service.UserService?anyhost=true&application=dubbo-consumer&check=false&codec=dubbo&dubbo=2.5.3&heartbeat=60000&interface=com.zzti.market.service.UserService&methods=login,putUserInfo,register&pid=10460&revision=1.0.3&side=consumer&timestamp=1521277446817&version=1.0.0, dubbo version: 2.5.3, current host: 192.168.0.105
+ [INFO ][2018/03/17 19:33:13569][org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:987)]
+Closing org.springframework.context.support.GenericApplicationContext@35d019a3: startup date [Sat Mar 17 17:04:04 CST 2018]; root of context hierarchy
+ [INFO ][2018/03/17 19:33:13567][com.alibaba.dubbo.config.AbstractConfig$1.run(AbstractConfig.java:450)]
+ [DUBBO] Run shutdown hook now., dubbo version: 2.5.3, current host: 192.168.0.105
+ [INFO ][2018/03/17 19:33:13583][com.alibaba.dubbo.registry.support.AbstractRegistryFactory.destroyAll(AbstractRegistryFactory.java:63)]
+ [DUBBO] Close all registries [zookeeper://47.93.99.237:2181/com.alibaba.dubbo.registry.RegistryService?application=dubbo-consumer&dubbo=2.5.3&interface=com.alibaba.dubbo.registry.RegistryService&pid=10460&timestamp=1521277446921], dubbo version: 2.5.3, current host: 192.168.0.105
+ [INFO ][2018/03/17 19:33:13570][com.alibaba.dubbo.remoting.transport.netty.NettyClient.doConnect(NettyClient.java:101)]
+ [DUBBO] Close old netty channel [id: 0x20317856, /192.168.0.105:23286 :> /192.168.0.105:20880] on create new netty channel [id: 0xe8d5263d, /192.168.0.105:23567 => /192.168.0.105:20880], dubbo version: 2.5.3, current host: 192.168.0.105
+ [INFO ][2018/03/17 19:33:13584][com.alibaba.dubbo.registry.support.AbstractRegistry.destroy(AbstractRegistry.java:485)]
+ [DUBBO] Destroy registry:zookeeper://47.93.99.237:2181/com.alibaba.dubbo.registry.RegistryService?application=dubbo-consumer&dubbo=2.5.3&interface=com.alibaba.dubbo.registry.RegistryService&pid=10460&timestamp=1521277446921, dubbo version: 2.5.3, current host: 192.168.0.105
+ [INFO ][2018/03/17 19:33:13589][com.alibaba.dubbo.registry.support.AbstractRegistry.unregister(AbstractRegistry.java:312)]
+ [DUBBO] Unregister: consumer://192.168.0.105/com.zzti.market.service.UserService?application=dubbo-consumer&category=consumers&check=false&dubbo=2.5.3&interface=com.zzti.market.service.UserService&methods=login,putUserInfo,register&pid=10460&revision=1.0.3&side=consumer&timestamp=1521277446817&version=1.0.0, dubbo version: 2.5.3, current host: 192.168.0.105
+ [INFO ][2018/03/17 19:33:13588][com.alibaba.dubbo.remoting.transport.AbstractClient.connect(AbstractClient.java:287)]
+ [DUBBO] Successed connect to server /192.168.0.105:20880 from NettyClient 192.168.0.105 using dubbo version 2.5.3, channel is NettyChannel [channel=[id: 0xe8d5263d, /192.168.0.105:23567 => /192.168.0.105:20880]], dubbo version: 2.5.3, current host: 192.168.0.105
+ [INFO ][2018/03/17 19:33:13601][com.alibaba.dubbo.registry.support.AbstractRegistry.unsubscribe(AbstractRegistry.java:343)]
+ [DUBBO] Unsubscribe: consumer://192.168.0.105/com.zzti.market.service.UserService?application=dubbo-consumer&category=providers,configurators,routers&dubbo=2.5.3&interface=com.zzti.market.service.UserService&methods=login,putUserInfo,register&pid=10460&revision=1.0.3&side=consumer&timestamp=1521277446817&version=1.0.0, dubbo version: 2.5.3, current host: 192.168.0.105
+ [INFO ][2018/03/17 19:33:13637][com.alibaba.dubbo.remoting.transport.netty.NettyChannel.close(NettyChannel.java:135)]
+ [DUBBO] Close netty channel [id: 0xe8d5263d, /192.168.0.105:23567 => /192.168.0.105:20880], dubbo version: 2.5.3, current host: 192.168.0.105
+ [INFO ][2018/03/17 19:33:13681][org.I0Itec.zkclient.ZkClient.processStateChanged(ZkClient.java:449)]
+zookeeper state changed (Disconnected)
+ [INFO ][2018/03/17 19:33:13680][com.alibaba.dubbo.rpc.protocol.dubbo.DubboProtocol$1.disconnected(DubboProtocol.java:130)]
+ [DUBBO] disconected from /192.168.0.105:20880,url:dubbo://192.168.0.105:20880/com.zzti.market.service.UserService?anyhost=true&application=dubbo-consumer&check=false&codec=dubbo&dubbo=2.5.3&heartbeat=60000&interface=com.zzti.market.service.UserService&methods=login,putUserInfo,register&pid=10460&revision=1.0.3&side=consumer&timestamp=1521277446817&version=1.0.0, dubbo version: 2.5.3, current host: 192.168.0.105
+ 
