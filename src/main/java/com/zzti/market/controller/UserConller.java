@@ -6,11 +6,11 @@ import com.zzti.market.service.UserService;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class UserConller {
     private Logger logger = LoggerFactory.getLogger(UserConller.class);
     @Resource
-    private UserService userServiceImpl;
+    private UserService userService;
     @Resource
     private  HttpSession session;
 
@@ -39,7 +39,7 @@ public class UserConller {
         User user =new User();
         user.setUserId(userId);
         user.setPassWord(passWord);
-        return userServiceImpl.register(user);
+        return userService.register(user);
     }
     /**
      * @Author: yzx
@@ -55,14 +55,16 @@ public class UserConller {
         User user =new User();
         user.setUserId(userId);
         user.setPassWord(passWord);
-        String returnMes=userServiceImpl.login(user);
+        String returnMes=userService.login(user);
         JSONObject rejson=JSONObject.fromObject(returnMes);
         if("1".equals(rejson.get("statusCode"))) {
             Map seMap = new HashMap();
-            session.setAttribute("userMap", seMap);
             String token = rejson.getString("token");
             seMap.put("token", token);
             seMap.put("userId", userId);
+            session.setAttribute("userMap", seMap);
+
+
         }
         return  returnMes;
     }
@@ -82,8 +84,8 @@ public class UserConller {
 
         return  userServiceImpl.putUserInfo(user).toString();
     }*/
-     @RequestMapping("/test")
     @ResponseBody
+    @RequestMapping("/test")
     public  String putUserInfo(){
 
 
@@ -99,9 +101,9 @@ public class UserConller {
         }else {
             return  false;
         }
-    }
-   /* public boolean appChecklogin( @RequestParam("token")String token, @RequestParam("userId")String userId){
-        Map userMap=session.getAttribute("userMap");
+    }*/
+    public boolean appChecklogin( @RequestParam("token")String token, @RequestParam("userId")String userId){
+        Map userMap= (Map) session.getAttribute("userMap");
         String mytoken=userMap.get("token").toString();
         String myuserId=userMap.get("userId").toString();
         if(mytoken.equals(token)&&myuserId.equals(userId))
@@ -110,5 +112,12 @@ public class UserConller {
         }else {
             return  false;
         }
-    }*/
+    }
+  @RequestMapping("/file")
+    public void File(HttpServletRequest  request){
+
+  }
+
+
+
 }

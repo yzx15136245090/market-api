@@ -232,7 +232,7 @@ var price=$("#price").val();
 	var st2=$("#st2").val();
 	var st3=$("#st3").val();
 	var st4=$("#st4").val();
-              if(goodsname==""||des==""||price==""||type==""||(st1==""&st2==""&st3==""&st4==""))
+              if(goodsname.replace(/\s+/g,"")==""||des.replace(/\s+/g,"")==""||price.replace(/\s+/g,"")==""||type.replace(/\s+/g,"")==""||(st1==""&st2==""&st3==""&st4==""))
                {
                 alert("请补充完整商品信息！");
                 return false;

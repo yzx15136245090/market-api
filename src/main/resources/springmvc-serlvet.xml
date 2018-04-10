@@ -42,4 +42,11 @@
   <mvc:view-controller path="default"  view-name="firstPage" />    
     
 	<mvc:default-servlet-handler />
+	<mvc:interceptors>
+		        <mvc:interceptor>
+	            <!-- 拦截所有URL中包含/user/的请求 -->
+		            <mvc:mapping path="/user/app/**"/>
+	           <bean class="com.zzti.market.interceptor.LoginInterceptor"></bean>
+	       </mvc:interceptor>
+	</mvc:interceptors>
 </beans>
