@@ -1,5 +1,6 @@
 package com.zzti.market.controller;
 
+import java.io.File;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -9,6 +10,7 @@ import com.zzti.market.entity.*;
 import com.zzti.market.enums.ResultType;
 import com.zzti.market.service.GoodsService;
 import org.apache.commons.lang.StringUtils;
+import org.aspectj.util.FileUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +25,17 @@ public class GoodsController {
   
 	@Resource
 	GoodsService goodsService;
-	//获取一级分类
     private Result result;
+
+    /**
+	 * @method fathertype
+	 * @Author: zhixiang.yang
+	 * @Description: 获取一级分类
+	 * @Date: 16:53 2018/4/11
+	 * @param
+	 * @return: java.util.List<com.zzti.market.entity.Fathertype>
+	 * @respbody:
+	 */
 	@RequestMapping("/fatherType")
 	@ResponseBody
 	public List<Fathertype> fathertype(){
@@ -36,7 +47,15 @@ public class GoodsController {
 	public String father(){
 		return "s";
 	}
-	//获取一级分类下的二级分类
+	/**
+	 * @method childtype
+	 * @Author: zhixiang.yang
+	 * @Description: 获取二级分类
+	 * @Date: 16:53 2018/4/11
+	 * @param typeid  一级分类id
+	 * @return: java.util.List<com.zzti.market.entity.Childtype>
+	 * @respbody:
+	 */
 	@ResponseBody
 	@RequestMapping("/childType")
 	public List<Childtype> childtype(String typeid) {
@@ -48,7 +67,6 @@ public class GoodsController {
 	 * @Author: zhixiang.yang
 	 * @Description:
 	 * @Date: 14:55 2018/4/10
-	 * @param token
 	 * @param userId
 	 * @param goodsname
 	 * @param description
@@ -64,29 +82,34 @@ public class GoodsController {
 	 * @return: com.zzti.market.entity.Result
 	 * @respbody:
 	 */
-    @RequestMapping("/user/app/release")
-    public Result appReleaseGoods(@RequestParam(required = true)String token,
-								  @RequestParam(required = true)String userId,
+    @RequestMapping("/release")
+    public Result releaseGoods(@RequestParam(required = true)String token,
+    		@RequestParam(required = true)String userId,
 								  @RequestParam(required = true)String goodsname,
+								  @RequestParam(required = true)String goodstype,
+								  @RequestParam(required = true)String goodschildtype,
 								  @RequestParam(required = true)String description,
 								  @RequestParam(required = true)String price,
 								  @RequestParam(required = true)Integer bargain,
 								  @RequestParam(required = true)Integer old,
-								  @RequestParam(required = true)Integer  inDate,
+								  @RequestParam(required = true)Integer  indate,
 								  @RequestParam(required = true)String place,
-								  @RequestParam(required = true)String  img1,
-								  @RequestParam(required = true)String  img2,
-								  @RequestParam(required = true)String img3,
-								  @RequestParam(required = true)String img4)
+								  HttpServletRequest request,
+								  @RequestParam(required = true) MultipartFile file1,
+								  @RequestParam(required = false) MultipartFile file2,
+							   	  @RequestParam(required = false) MultipartFile file3,
+								  @RequestParam(required = false) MultipartFile file4)
 	{
 		result=new Result();
-		if(StringUtils.isBlank(userId)||StringUtils.isBlank(goodsname)||StringUtils.isBlank(description)||StringUtils.isBlank(place)||StringUtils.isBlank(img1)||StringUtils.isBlank(price)||bargain==null||old==null||inDate==null){
+		if(StringUtils.isBlank(userId)||StringUtils.isBlank(goodsname)||StringUtils.isBlank(description)||StringUtils.isBlank(place)||file1==null||StringUtils.isBlank(price)||bargain==null||old==null||indate==null){
 			result.setCode(ResultType.RESULT_ERROR.getStatus());
 			return  result;
 		}
-
+		MultipartFile[] cms={file1,file2,file3,file4};
+		goodsService.releaseGoods(userId,goodsname,goodstype,goodschildtype,description,price,bargain,old,indate,place,cms,request);
           return  result;
     }
+
 //	@RequestMapping("/release")
 //	public String ReleaseGoods(@RequestParam("file1") MultipartFile cm1, @RequestParam("file2") MultipartFile cm2,
 //							   @RequestParam("file3") MultipartFile cm3,
@@ -99,7 +122,7 @@ public class GoodsController {
 //
 //			return "redirect:/index/firstPage.jsp";
 //	}
-	//查询发布状态的商品信息
+	//查询发布状�?�的商品信息
 
 //	@RequestMapping("/allGoods0")
 //	public String allGoods0(HttpSession session,Model model,int startPage,int  pageSize,HttpServletRequest request) {

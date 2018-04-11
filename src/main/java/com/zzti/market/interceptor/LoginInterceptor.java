@@ -33,6 +33,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             out.print("-1");
             return  false;
         }
+        String SS=request.getParameter("token");
         String token=userMap.get("token").toString();
         if("".equals(request.getParameter("token"))||request.getParameter("token")==null) {
             System.out.println("please login");

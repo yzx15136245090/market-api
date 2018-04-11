@@ -1,9 +1,22 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%> 
+<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+
+<%
+    String userId=new String();
+    String token=new String();
+    if(request.getSession().getAttribute("userMap")!=null)
+    {Map user= (Map) request.getSession().getAttribute("userMap"); //获取你的对象里面涵盖的内容
+     userId = (String) user.get("userId");
+     token = (String) user.get("token");}
+    else {
+        userId="";
+        token="";
+    }
+     %>
 
 <html>
 <head lang="en">
-  
+
     <title>发布商品</title>
     <link rel="stylesheet" href="css/global.css"/>
     <link rel="stylesheet" href="css/main.css"/>
@@ -49,7 +62,7 @@
         <div class="pructNav">
             <a href="javascript:;">所有商品分类</a>
             <ul class="pull-menu">
-                  <li><a id="1" href="#" onclick="javascript:typesearch('1');">书籍资料</a></li>
+                <li><a id="1" href="#" onclick="javascript:typesearch('1');">书籍资料</a></li>
                 <li><a id="2" href="#" onclick="javascript:typesearch('2');">电子产品</a></li>
                 <li><a id="3" href="#" onclick="javascript:typesearch('3');">家居用品</a></li>
                 <li><a id="4" href="#" onclick="javascript:typesearch('4');">运动专区</a></li>
@@ -61,7 +74,7 @@
             </ul>
         </div>
         <ul class="lf">
-         <li class="u-deepBlue"><a href="${pageContext.request.contextPath}/index.jsp">首页</a></li>
+            <li class="u-deepBlue"><a href="${pageContext.request.contextPath}/index.jsp">首页</a></li>
             <li><a onclick="islogin()" id="toPubGoods" href="${pageContext.request.contextPath}/index/pubProduct.jsp">商品发布</a></li>
             <li><a  href="${pageContext.request.contextPath}/index/Buymessage.jsp">求购专区</a></li>
             <li><a href="">紧急销售</a></li>
@@ -97,34 +110,36 @@
         <div class="lf fmc-box">
             <h3 class="clearfix"><span class="lf">发布商品</span> <a class="rt" href="javascript:;">我的商品</a></h3>
             <form action="${pageContext.request.contextPath}/release" enctype="multipart/form-data" method="post"  onsubmit="return Check()">
+                <input id="userId" type="hidden" value="<%=userId %>" name="userId"/>
+                <input id="token" type="hidden" value="<%=token %>"  name="token"/>
                 <div class="clearfix">
                     <div class="lf fill">
                         <div class="form-group"><label>商品名称：</label><input type="text" id="goodsname" name="goodsname"/></div>
                         <div class="form-group"><label>一级分类：</label><select  id="type1" name="goodstype" class="fatherType">
-			  <option value="0">选择分类</option>
-			 
-			  </select></div>
+                            <option value="0">选择分类</option>
+
+                        </select></div>
                         <div class="form-group"><label>二级分类：</label><select name="goodschildtype"  id="type2">
-			  <option value="0">选择分类</option>
-			
-			  </select></div>
+                            <option value="0">选择分类</option>
+
+                        </select></div>
                         <div class="form-group"><label>商品价格：</label><input type="text" id="price" name="price" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"/></div>
-                        <div class="form-group"><label>新旧程度：</label><select  id="bargain" name="old">
-			  <option value="9">9成新</option>
-			 <option value="7">7成新</option>
-			 <option value="5">5成新</option>
-			 <option value="3">3成新</option>
-			  </select></div>
+                        <div class="form-group"><label>新旧程度：</label><select  id="old" name="old">
+                            <option value="9">9成新</option>
+                            <option value="7">7成新</option>
+                            <option value="5">5成新</option>
+                            <option value="3">3成新</option>
+                        </select></div>
                         <div class="form-group"><label>保留时间：</label><select  name="indate" id="indate">
-			  <option value="7">7天</option>
-			  <option value="15">15天</option>
-			 <option value="30">30天</option>
-			 <option value="90">90天</option>
-			  </select></div>
-			  <div class="form-group"><label>是否议价：</label><select name="bargain" id="bargain">
-			  <option value="0">接受议价</option>
-			  <option value="1">不接受议价</option>
-			  </select></div>
+                            <option value="7">7天</option>
+                            <option value="15">15天</option>
+                            <option value="30">30天</option>
+                            <option value="90">90天</option>
+                        </select></div>
+                        <div class="form-group"><label>是否议价：</label><select name="bargain" id="bargain">
+                            <option value="0">接受议价</option>
+                            <option value="1">不接受议价</option>
+                        </select></div>
                     </div>
                     <div class="rt pInfo clearfix" >
                         <div class="form-group">
@@ -151,16 +166,16 @@
                                         <div id="preview4"></div>
                                         <input  id="st4" name="file4" onchange="previewImage(this,4)" type="file"/>
                                     </li>
-                                  
-                                     
+
+
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-               
+
                 <div class="pubBtn"><input type="submit" id="pub" value="确认发布"></div>
-                
+
             </form>
         </div>
     </div>
@@ -193,63 +208,66 @@
 <script src="js/jquery-1.11.3.js"></script>
 <script src="js/main.js"></script>
 <script type="text/javascript">
-	$(function(){
-		
-			$.post("${pageContext.request.contextPath}/fatherType",{},function(data){
-			$("#type1").html="";
-				for(var i=0;i<data.length;i++){
-					var option = $("<option value='"+data[i].typeid+"'>"+data[i].typename+"</option>")
-					$("#type1").append(option);
-					
-				}
-			});
-		
-		 $(".fatherType").change(function(){
-		 
-		 $("#type2").html="";
-		 var typeid= $("#type1").val();
-		 $.post("${pageContext.request.contextPath}/childType",{typeid:typeid},function(data){
-			$("#type2").html("");
-				for(var i=0;i<data.length;i++){
-					var option = $("<option value='"+data[i].childtypeid+"'>"+data[i].childtypename+"</option>")
-					$("#type2").append(option);
-				}
-			});
-		 
-		 
-		 })
+    $(function(){
 
-		
-		});
-				 function Check(){
-	
-	
-	var goodsname=$("#goodsname").val();
-var price=$("#price").val();
-	var des=$("#des").val();
-	var type=$("#type1").val();
-	var st1=$("#st1").val();
-	var st2=$("#st2").val();
-	var st3=$("#st3").val();
-	var st4=$("#st4").val();
-              if(goodsname.replace(/\s+/g,"")==""||des.replace(/\s+/g,"")==""||price.replace(/\s+/g,"")==""||type.replace(/\s+/g,"")==""||(st1==""&st2==""&st3==""&st4==""))
-               {
-                alert("请补充完整商品信息！");
-                return false;
-              }
- 
-            else{
-         
-            
-              alert("发布成功!");
-            
-          
-                 return true;
-             }
-}
-		
+        $.post("${pageContext.request.contextPath}/fatherType",{},function(data){
+            $("#type1").html="";
+            for(var i=0;i<data.length;i++){
+                var option = $("<option value='"+data[i].typeid+"'>"+data[i].typename+"</option>")
+                $("#type1").append(option);
 
-	
+            }
+        });
+
+        $(".fatherType").change(function(){
+
+            $("#type2").html="";
+            var typeid= $("#type1").val();
+            $.post("${pageContext.request.contextPath}/childType",{typeid:typeid},function(data){
+                $("#type2").html("");
+                for(var i=0;i<data.length;i++){
+                    var option = $("<option value='"+data[i].childtypeid+"'>"+data[i].childtypename+"</option>")
+                    $("#type2").append(option);
+                }
+            });
+
+
+        })
+
+
+    });
+    function Check(){
+        var goodsname=$("#goodsname").val();
+        var price=$("#price").val();
+        var des=$("#des").val();
+        var type=$("#type1").val();
+        var st1=$("#st1").val();
+        var st2=$("#st2").val();
+        var st3=$("#st3").val();
+        var st4=$("#st4").val();
+        var userId=$("#userId").val();
+        var token=$("#token").val();
+        debugger;
+        debugger;
+        if(userId==""||token==null)
+        {
+            window.location="./login.jsp";
+            return false;
+        }
+        if(goodsname==""||des==""||price==""||type==""||(st1==""&st2==""&st3==""&st4==""))
+        {
+            alert("请补充完整商品信息！");
+            return false;
+        }
+
+        else{
+            alert("发布成功!");
+            return true;
+        }
+    }
+
+
+
 
 </script>
 </body>
