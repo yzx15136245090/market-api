@@ -1,7 +1,9 @@
 package com.zzti.market.controller;
 
-import java.io.File;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +28,8 @@ public class GoodsController {
 	@Resource
 	GoodsService goodsService;
     private Result result;
+    private Goods goods;
+    private Goodspicture goodspicture;
 
     /**
 	 * @method fathertype
@@ -62,29 +66,31 @@ public class GoodsController {
 		return goodsService.childtype(typeid);
 	}
 	//发布商品
-    /**
-	 * @method appReleaseGoods
-	 * @Author: zhixiang.yang
-	 * @Description:
-	 * @Date: 14:55 2018/4/10
-	 * @param userId
-	 * @param goodsname
-	 * @param description
-	 * @param price
-	 * @param bargain
-	 * @param old
-	 * @param inDate
-	 * @param place
-	 * @param img1
-	 * @param img2
-	 * @param img3
-	 * @param img4
-	 * @return: com.zzti.market.entity.Result
-	 * @respbody:
-	 */
+   /**
+	* @method releaseGoods
+	* @Author: zhixiang.yang
+	* @Description: 发布商品
+	* @Date: 19:40 2018/4/12
+    * @param userId
+    * @param goodsname 商品名称
+    * @param goodstype 商品一级类别  传id
+    * @param goodschildtype 商品二级类别  传id
+    * @param description  商品描述
+    * @param price  商品价格
+    * @param bargain  是否议价
+    * @param old  几成新
+    * @param indate  发布期限
+    * @param place   交易地点
+    * @param request
+    * @param file1
+    * @param file2
+    * @param file3
+    * @param file4
+	* @return: com.zzti.market.entity.Result
+	* @respbody:
+	*/
     @RequestMapping("/release")
-    public Result releaseGoods(@RequestParam(required = true)String token,
-    		@RequestParam(required = true)String userId,
+    public Result releaseGoods(@RequestParam(required = true)String userId,
 								  @RequestParam(required = true)String goodsname,
 								  @RequestParam(required = true)String goodstype,
 								  @RequestParam(required = true)String goodschildtype,
@@ -105,24 +111,48 @@ public class GoodsController {
 			result.setCode(ResultType.RESULT_ERROR.getStatus());
 			return  result;
 		}
-		MultipartFile[] cms={file1,file2,file3,file4};
-		goodsService.releaseGoods(userId,goodsname,goodstype,goodschildtype,description,price,bargain,old,indate,place,cms,request);
+		MultipartFile[] cms=new MultipartFile[4];
+		if(file1!=null){
+			cms[0]=file1;
+		}else if(file2!=null){
+			cms[1]=file2;
+		}else if(file3!=null){
+			cms[2]=file3;
+		}else if(file4!=null){
+			cms[3]=file4;
+		}
+		List<String> goodspicList=new ArrayList<>();
+		List<String> picnameList=new ArrayList<>();
+		for(int i=0;i<cms.length;i++){
+			if(cms[i]!=null){
+				//保存图片并且保存到数据库
+				String goodspic=UUID.randomUUID().toString().replace("-", "");
+				goodspicList.add(goodspic);
+				String pname=(cms[i].getOriginalFilename()).substring((cms[i].getOriginalFilename()).lastIndexOf("."));
+				String picname=goodspic+pname;
+				picnameList.add(picname);
+				String ddd=File.separator;
+				String sd=System.getProperty("user.dir");
+				String p1 = request.getSession().getServletContext().getRealPath("");
+				String path=p1.substring(0,p1.lastIndexOf(ddd));
+				String path2=path.substring(0,p1.lastIndexOf(ddd));
+			//	String path=sd+ddd+"picture";
+				String file=path2+ddd+"picture"+ddd+picname;
+				try {
+					cms[i].transferTo(new File(file));
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+        goodsService.releaseGoods(userId,goodsname,goodstype,goodschildtype,description,price,bargain,old,indate,place,goodspicList,picnameList);
           return  result;
     }
 
-//	@RequestMapping("/release")
-//	public String ReleaseGoods(@RequestParam("file1") MultipartFile cm1, @RequestParam("file2") MultipartFile cm2,
-//							   @RequestParam("file3") MultipartFile cm3,
-//							   @RequestParam("file4") MultipartFile cm4,
-//
-//							   Goods goods, HttpServletRequest request, HttpSession session) {
-//		 MultipartFile[] cms={cm1,cm2,cm3,cm4};
-//		 System.out.println(goods.getGoodsname());
-//        goodsServiceImpl.ReleaseGoods(cms,goods, request);
-//
-//			return "redirect:/index/firstPage.jsp";
-//	}
-	//查询发布状�?�的商品信息
 
 //	@RequestMapping("/allGoods0")
 //	public String allGoods0(HttpSession session,Model model,int startPage,int  pageSize,HttpServletRequest request) {

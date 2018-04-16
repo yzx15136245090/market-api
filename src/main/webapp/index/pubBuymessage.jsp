@@ -1,6 +1,17 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%> 
-
+<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%
+    String userId=new String();
+    String token=new String();
+    if(request.getSession().getAttribute("userMap")!=null)
+    {Map user= (Map) request.getSession().getAttribute("userMap"); //获取你的对象里面涵盖的内容
+        userId = (String) user.get("userId");
+        token = (String) user.get("token");}
+    else {
+        userId="";
+        token="";
+    }
+%>
 <html>
 <head lang="en">
   
@@ -97,6 +108,8 @@
         <div class="lf fmc-box">
             <h3 class="clearfix"><span class="lf">发布求购</span> <a class="rt" href="javascript:;">我的商品</a></h3>
             <form action="${pageContext.request.contextPath}/releaseBuymessage" enctype="multipart/form-data" method="post"  onsubmit="return Check()">
+                <input id="userId" type="hidden" value="<%=userId %>" name="userId"/>
+                <input id="token" type="hidden" value="<%=token %>"  name="token"/>
                 <div class="clearfix">
                     <div class="lf fill  lf-pubBuymessage">
                         <div class="form-group"><label>求购商品：</label><input type="text" id="buygoodsname" name="buygoodsname"/></div>
@@ -161,8 +174,8 @@
 	
 	
 	var buygoodsname=$("#buygoodsname").val();
-var wantprice=$("#wantprice").val();
-var place=$("#place_pubBuymessage").val();
+    var wantprice=$("#wantprice").val();
+    var place=$("#place_pubBuymessage").val();
 	var des=$("#des_pubBuymessage").val();
               if(buygoodsname==""||des==""||wantprice==""||place=="")
                {
@@ -171,7 +184,7 @@ var place=$("#place_pubBuymessage").val();
               }
  
             else{
-         
+
             
               alert("发布成功!");
             

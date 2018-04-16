@@ -45,7 +45,7 @@
 	<mvc:interceptors>
 		        <mvc:interceptor>
 	            <!-- 拦截所有URL中包含/user/的请求 -->
-		            <mvc:mapping path="/user/**"/>
+		            <mvc:mapping path="/user/app/ss/**"/>
 	           <bean class="com.zzti.market.interceptor.LoginInterceptor"></bean>
 	       </mvc:interceptor>
 	</mvc:interceptors>

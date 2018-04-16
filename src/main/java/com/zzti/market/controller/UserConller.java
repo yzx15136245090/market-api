@@ -134,11 +134,6 @@ public class UserConller {
             return  false;
         }
     }
-  @RequestMapping("/file")
-    public void File(HttpServletRequest  request){
-
-  }
-
 
 
 }

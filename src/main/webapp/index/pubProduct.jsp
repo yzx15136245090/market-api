@@ -247,8 +247,6 @@
         var st4=$("#st4").val();
         var userId=$("#userId").val();
         var token=$("#token").val();
-        debugger;
-        debugger;
         if(userId==""||token==null)
         {
             window.location="./login.jsp";
