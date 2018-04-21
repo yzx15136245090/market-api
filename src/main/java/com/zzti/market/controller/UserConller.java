@@ -1,19 +1,16 @@
 package com.zzti.market.controller;
 
 
-import com.sun.org.apache.regexp.internal.RE;
-import com.zzti.market.entity.Result;
+import com.zzti.market.result.PageResult;
+import com.zzti.market.result.Result;
 import com.zzti.market.entity.User;
 import com.zzti.market.service.UserService;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,13 +25,14 @@ public class UserConller {
 
     private  Result result;
 
+    private PageResult pageResult;
+
     /**
      * @Author: yzx
      * @Description: 注册
      * @Date: 10:34 2018/3/17
      */
     @RequestMapping("market/userRegister")
-    @ResponseBody
     public String register(@RequestBody String  requestData) {
         logger.info(requestData);
         JSONObject json=JSONObject.fromObject(requestData);
@@ -51,7 +49,6 @@ public class UserConller {
      * @Date: 10:35 2018/3/17
      */
     @RequestMapping("market/userLogin")
-    @ResponseBody
     public String login(@RequestBody String requestData){
         JSONObject json=JSONObject.fromObject(requestData);
         String userId=json.getString("userId");
@@ -71,6 +68,15 @@ public class UserConller {
         return  returnMes;
     }
 
+    /**
+     * @method getUserInfo
+     * @Author: zhixiang.yang
+     * @Description: 获取用户信息
+     * @Date: 18:18 2018/4/19
+     * @param userId  用户账号
+     * @return: com.zzti.market.entity.Result
+     * @respbody:
+     */
     @RequestMapping("user/getUserInfo")
     public Result getUserInfo(@RequestParam(required = true)String userId){
         result=new Result();
@@ -78,7 +84,6 @@ public class UserConller {
             result.setCode(200);
             result.setMessage("userId不能为空");
         }
-
         result.setData(userService.getUserInfo(userId));
         return result;
     }
@@ -95,8 +100,8 @@ public class UserConller {
      * @return: java.lang.String
      * @respbody:
      */
-    @ResponseBody
-                @RequestMapping("user/updateUserInfo")
+
+    @RequestMapping("user/updateUserInfo")
     public  Result updateUserInfo(@RequestParam(required = true)String userId,
                                   @RequestParam(required = true) String userName,
                                   @RequestParam(required = false) String userSchool,
@@ -123,16 +128,14 @@ public class UserConller {
             return  false;
         }
     }*/
-    public boolean appChecklogin( @RequestParam("token")String token, @RequestParam("userId")String userId){
+
+    public Result checklogin(){
+        result=new Result();
         Map userMap= (Map) session.getAttribute("userMap");
         String mytoken=userMap.get("token").toString();
         String myuserId=userMap.get("userId").toString();
-        if(mytoken.equals(token)&&myuserId.equals(userId))
-        {
-            return  true;
-        }else {
-            return  false;
-        }
+        result.setData(userService.getUserInfo(myuserId));
+        return result;
     }
 
 

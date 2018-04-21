@@ -77,25 +77,12 @@
             </ul>
         </div>
     </div>
-    <!--商品分类-->
-    <!--<div id="goodsClassify">-->
-        <!--<ul>-->
-            <!--<li class="curr"><a href="">所有商品分类 <i>  》</i></a></li>-->
-            <!--<li><a href="">首页</a></li>-->
-            <!--<li><a href="">商品发布</a></li>-->
-            <!--<li><a href="">求购专区</a></li>-->
-            <!--<li><a href="">紧急销售</a></li>-->
-            <!--<li><a href="">最新发布</a></li>-->
-            <!--<li><a href="">发布求购</a></li>-->
-            <!--<li><a href="">其他</a></li>-->
-        <!--</ul>-->
-    <!--</div>-->
     <div id="main_nav">
         <div id="nav" class="clearfix">
             <div class="pructNav">
                 <a href="javascript:;">所有商品分类</a>
                 <ul class="pull-menu">
-                      <li><a id="1" href="#" onclick="javascript:typesearch('1');">书籍资料</a></li>
+                <li><a id="1" href="#" onclick="javascript:typesearch('1');">书籍资料</a></li>
                 <li><a id="2" href="#" onclick="javascript:typesearch('2');">电子产品</a></li>
                 <li><a id="3" href="#" onclick="javascript:typesearch('3');">家居用品</a></li>
                 <li><a id="4" href="#" onclick="javascript:typesearch('4');">运动专区</a></li>

@@ -9,12 +9,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.zzti.market.entity.*;
+import com.zzti.market.enums.CommonStatus;
+import com.zzti.market.result.*;
 import com.zzti.market.enums.ResultType;
 import com.zzti.market.service.GoodsService;
 import org.apache.commons.lang.StringUtils;
-import org.aspectj.util.FileUtil;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,9 +26,11 @@ public class GoodsController {
   
 	@Resource
 	GoodsService goodsService;
+
     private Result result;
     private Goods goods;
     private Goodspicture goodspicture;
+    private PageResult pageResult;
 
     /**
 	 * @method fathertype
@@ -41,16 +42,11 @@ public class GoodsController {
 	 * @respbody:
 	 */
 	@RequestMapping("/fatherType")
-	@ResponseBody
 	public List<Fathertype> fathertype(){
 		List<Fathertype> fathertypeList=goodsService.fathertype();
 		return fathertypeList;
 	}
-    @ResponseBody
-	@RequestMapping("/te")
-	public String father(){
-		return "s";
-	}
+
 	/**
 	 * @method childtype
 	 * @Author: zhixiang.yang
@@ -60,12 +56,12 @@ public class GoodsController {
 	 * @return: java.util.List<com.zzti.market.entity.Childtype>
 	 * @respbody:
 	 */
-	@ResponseBody
 	@RequestMapping("/childType")
 	public List<Childtype> childtype(String typeid) {
 		return goodsService.childtype(typeid);
 	}
-	//发布商品
+
+
    /**
 	* @method releaseGoods
 	* @Author: zhixiang.yang
@@ -153,6 +149,39 @@ public class GoodsController {
           return  result;
     }
 
+
+    /**
+	 * @method getGoodsPage
+	 * @Author: zhixiang.yang
+	 * @Description:  分页查询商品
+	 * @Date: 16:39 2018/4/21
+	 * @param startPage   第几页|Integer|必输
+	 * @param pageSize	   每页多少条|Integer|必输
+	 * @param name			商品名称|String| 通过模糊搜索时，输入  （上架中的）
+	 * @param type			商品类型，一级分类的编号|String| 类别搜索时输入（上架中的）
+	 * @param userId		用户id|String|获取我的发布商品时输入（分为上架中  和  已下架 两个）
+	 * @param status		商品状态|String| 0 上架中  1  已下架  必输
+	 * @return: com.zzti.market.result.PageResult
+	 * @respbody:
+	 */
+    @RequestMapping("/getGoodsPage")
+    public PageResult getGoodsPage(Integer startPage,Integer pageSize,
+                                   @RequestParam(required = false) String name,
+                                   @RequestParam(required = false) String type,
+                                   @RequestParam(required = false) String userId,
+                                   @RequestParam(required = true) String status){
+        pageResult=new PageResult();
+        if(startPage==null||pageSize==null){
+            pageResult.setCode(ResultType.RESULT_ERROR.getStatus());
+            pageResult.setMessage("参数错误");
+            return  pageResult;
+        }
+        List<GoodsResult> list=goodsService.getGoodsListPage(startPage, pageSize, name, type, userId, status);
+        int count = goodsService.getCountGoods(name, type, userId, status);
+        pageResult.setData(list);
+        pageResult.setCount(count);
+        return  pageResult;
+    }
 
 //	@RequestMapping("/allGoods0")
 //	public String allGoods0(HttpSession session,Model model,int startPage,int  pageSize,HttpServletRequest request) {

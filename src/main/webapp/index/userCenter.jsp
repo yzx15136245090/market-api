@@ -1,6 +1,17 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%
+  String userId=new String();
+  String token=new String();
+  if(request.getSession().getAttribute("userMap")!=null)
+  {Map user= (Map) request.getSession().getAttribute("userMap"); //获取你的对象里面涵盖的内容
+    userId = (String) user.get("userId");
+    token = (String) user.get("token");}
+  else {
+    userId="";
+    token="";
+  }
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head lang="en">
@@ -150,12 +161,17 @@
               </p>
               <p>修改头像</p>
             </div>
+            <input id="userId" type="hidden" value="<%=userId %>" name="userId"/>
             <div class="userInfo">
-              <p>用户名称：<span>${user.username}</span>,欢迎您！</p>
-              <p>当前积分：<i>${user.credit}</i></p>
-              <p>会员等级：<i>${user.power}</i></p>
-              <p>累计消费金额：<i>${user.money}</i></p>
+              <p>昵称：<input value="" readonly="true" style="border:none;background: #ddeef6;height: 25px"  id="userName" class="up"></p>
+              <p>手机号：<input value="" readonly="true"  style="border:none;background: #ddeef6;height: 25px" id="telphone"  class="up"></p>
+              <p>邮箱：<input value="" readonly="true"  style="border:none;background: #ddeef6;height: 25px"  id="email" class="up"></p>
+              <p>学校：<input value="" readonly="true"  style="border:none;background;background: #ddeef6;height: 25px" id="userSchool"  class="up"></p>
+              <p>当前积分：<i id="credit"></i></p>
+              <p>会员等级：<i id="power"></i></p>
+              <p>累计消费金额：<i id="money"></i></p>
               <p ><a href="#stuCertification">学生认证 去认证 >></a></p>
+              <p ><span style="margin-left: 600px;cursor:pointer" onclick="update()">编辑</span> <span style="margin-left: 20px;cursor:pointer" onclick="keep()">保存</span></p>
             </div>
           </div>
          
@@ -622,298 +638,247 @@
   <script src="${pageContext.request.contextPath}/index/js/userCenter.js"></script>
   <script src="${pageContext.request.contextPath}/index/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/index/js/bootstrap-paginator.min.js"></script>
- <script type="text/javascript"> 
-   function previewImage(file)
-       {
-    var div = document.getElementById('preview1');
-    if (file.files && file.files[0])
-    {
-       div.innerHTML ='<img id=imghead>';
-        var img = document.getElementById('imghead'+'');
-        img.onload = function(){
-            img.width  =50;
-            img.height =50;
-        }
-        var reader = new FileReader();
-        reader.onload = function(evt){
-        	img.src = evt.target.result;
-        	}
-        reader.readAsDataURL(file.files[0]);
+ <script type="text/javascript">
+   var userId=$("#userId").val();
+   var userName=$("#userName").val();
+   var telphone=$("#telphone").val();
+   var  userSchool=$("#userSchool").val();
+   var email=$("#email").val();
+     function update() {
+         $(".up").removeAttr("readonly");
+         $(".up").css("border","1px solid #666")
+     }
+    function getUser(){
+        $.post("${pageContext.request.contextPath}/user/getUserInfo",{userId:userId},
+            function (data) {
+            var user=data.data;
+ debugger;
+            });
     }
-    else
-    {
-        var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
-        file.select();
-        var src = document.selection.createRange().text;
-       // div.innerHTML = '<img id=imghead'+'>';
-        var img = document.getElementById('imghead2');
-        img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
-    }
-}
-		function updateUser(){
-		
-			//jquery 验证框架 需要监听 form 提交事件 走验证
-			$("#update").submit();	
-		}
-		//页面加载初始化时候 ----对表单输入框 进行增加验证 --并设定验证通过够执行流程
-		$(document).ready(function(){
-			// 在键盘按下并释放及提交后验证提交表单
-			  $("#update").validate({
-				// 验证规则 
-			    rules: {   newPwd : {   required:true,  minlength: 6,    maxlength:12  } ,
-					  	  confirmNewPwd :{required:true,equalTo: "#newPwd"},
-					  	  
-			    		  },
-			    messages: {    newPwd: {  required: "请输入密码",  minlength: "密码长度不能小于 6 个字符",   maxlength: "密码长度不能多于12个字符" }, 
-			                 confirmNewPwd:{required:"内容不能为空",equalTo:"密码不一致"},
-			                 
-			              },
-			              /*错误提示位置*/
-			             /*  errorPlacement: function (error, element) {//第一个参数是错误的提示文字，第二个参数是当前输入框
-				         error.appendTo(element.siblings("span"));//用的是jQuery，这里设置的是，错误提示文本显示在当前文本框的兄弟span中
-				        },*/
-			  submitHandler: function(form) 
-			   {    
-				 
-				  //验证通过后 走此出业务流程
-				 $.post("${pageContext.request.contextPath}/manager/updateToUserSystem",{"currPwd":$("#currPwd").val(),"newPwd":$("#newPwd").val()},
-					 function(data){
-					  if(data==1){
-					  window.alert("恭喜密码修改成功,请重新登陆！");
-					  window.location.href="${pageContext.request.contextPath}/index/login.jsp";
-					  } 
-					  else {
-					   window.alert("密码修改失败!");
-					   }
-					  
-					  
-					 
-			        }); 
-			   } 
-			});
-		});
-var loading="";
-$(function(){
-	var startPageTemp_myRelease=$("#startPageTemp-myRelease").val();
-	$("#box_userGoods").empty().append(loading);
-	//copy 复制一份 post ajax 形式
-	   $.post("${pageContext.request.contextPath}/userGoods0",{startPage:0,pageSize:3},
-			   function(data){
-			
-		     $("#box_userGoods").empty().append(data);
-		    
-			var options = { 
-					bootstrapMajorVersion:3, //版本
-                  currentPage:startPageTemp_myRelease, //当前页数
-                  totalPages:$("#totalPages-myRelease").val(), //总页数
-                  size:"small",//设置控件的显示大小，是个字符串. 允许的值: mini, small, normal,large。值：mini版的、小号的、正常的、大号的。
-                  numberOfPages:5, //总页数,//设置分页每次显示的页数
-                  shouldShowPage:true, // 该参数用于设置某个操作按钮是否显示
-                  itemTexts: function (type, page, current) {
-                      switch (type) {
-                          case "first":
-                              return "首页";
-                          case "prev":
-                              return "上一页";
-                          case "next":
-                              return "下一页";
-                          case "last":
-                              return "末页";
-                          case "page":
-                              return page;
-                      }
-                  },//点击事件，用于通过Ajax来刷新整个list列表
-                  onPageClicked: function (event, originalEvent, type, page){
-                   $("#box_userGoods").empty().append(loading);
-                     startPageTemp_myRelease=page;
-                     $.post("${pageContext.request.contextPath}/userGoods0",{startPage:page-1,pageSize:3},
-                    function(data){
-                     	 $("#box_userGoods").empty().append(data);
-                      
-                   });
-                  }
-              };
-			
-			  $('#pageLimit-myRelease').bootstrapPaginator(options);
-			
-		 });
+     $(function() {
+         getUser();
+     });
 
-	
-	
- var startPageTemp_shopcat=$("#startPageTemp-shopcat").val();
-		$("#myShopCatTable").empty().append(loading);
-		//copy 复制一份 post ajax 形式
-		   $.post("${pageContext.request.contextPath}/shopcatGoods",{startPage:0,pageSize:4},
-				   function(data){
-				
-			     $("#myShopCatTable").empty().append(data);
-			    
-				var options = { 
-						bootstrapMajorVersion:3, //版本
-                      currentPage:startPageTemp_shopcat, //当前页数
-                      totalPages:$("#totalPages-shopcat").val(), //总页数
-                      size:"small",//设置控件的显示大小，是个字符串. 允许的值: mini, small, normal,large。值：mini版的、小号的、正常的、大号的。
-                      numberOfPages:5, //总页数,//设置分页每次显示的页数
-                      shouldShowPage:true, // 该参数用于设置某个操作按钮是否显示
-                      itemTexts: function (type, page, current) {
-                          switch (type) {
-                              case "first":
-                                  return "首页";
-                              case "prev":
-                                  return "上一页";
-                              case "next":
-                                  return "下一页";
-                              case "last":
-                                  return "末页";
-                              case "page":
-                                  return page;
-                          }
-                      },//点击事件，用于通过Ajax来刷新整个list列表
-                      onPageClicked: function (event, originalEvent, type, page){
-                       $("#myShopCatTable").empty().append(loading);
-                         startPageTemp_shopcat=page;
-                         $.post("${pageContext.request.contextPath}/shopcatGoods",{startPage:page-1,pageSize:4},
-                        function(data){
-                         	 $("#myShopCatTable").empty().append(data);
-                          
-                       });
-                      }
-                  };
-				
-				  $('#pageLimit-myShopCat').bootstrapPaginator(options);
-				
-			 });
-	
- var startPageTemp=$("#startPageTemp").val();
-		$("#myTable").empty().append(loading);
-		//copy 复制一份 post ajax 形式
-		   $.post("${pageContext.request.contextPath}/myCollectGoods",{startPage:0,pageSize:4},
-				   function(data){
-				
-			     $("#myTable").empty().append(data);
-			    
-				var options = { 
-						bootstrapMajorVersion:3, //版本
-                      currentPage:startPageTemp, //当前页数
-                      totalPages:$("#totalPages").val(), //总页数
-                      size:"small",//设置控件的显示大小，是个字符串. 允许的值: mini, small, normal,large。值：mini版的、小号的、正常的、大号的。
-                      numberOfPages:5, //总页数,//设置分页每次显示的页数
-                      shouldShowPage:true, // 该参数用于设置某个操作按钮是否显示
-                      itemTexts: function (type, page, current) {
-                          switch (type) {
-                              case "first":
-                                  return "首页";
-                              case "prev":
-                                  return "上一页";
-                              case "next":
-                                  return "下一页";
-                              case "last":
-                                  return "末页";
-                              case "page":
-                                  return page;
-                          }
-                      },//点击事件，用于通过Ajax来刷新整个list列表
-                      onPageClicked: function (event, originalEvent, type, page){
-                       $("#myTable").empty().append(loading);
-                         startPageTemp=page;
-                         $.post("${pageContext.request.contextPath}/myCollectGoods",{startPage:page-1,pageSize:4},
-                        function(data){
-                         	 $("#myTable").empty().append(data);
-                          
-                       });
-                      }
-                  };
-				
-				  $('#pageLimit').bootstrapPaginator(options);
-				
-			 });
-			  var startPageTemp_mySallOrder=$("#startPageTemp-mySallOrder").val();
-		$("#mySallTable").empty().append(loading);
-		//copy 复制一份 post ajax 形式
-		   $.post("${pageContext.request.contextPath}/mySallOrder",{startPage:0,pageSize:4},
-				   function(data){
-				
-			     $("#mySallTable").empty().append(data);
-			    
-				var options = { 
-						bootstrapMajorVersion:3, //版本
-                      currentPage:startPageTemp_mySallOrder, //当前页数
-                      totalPages:$("#totalPages-mySallOrder").val(), //总页数
-                      size:"small",//设置控件的显示大小，是个字符串. 允许的值: mini, small, normal,large。值：mini版的、小号的、正常的、大号的。
-                      numberOfPages:5, //总页数,//设置分页每次显示的页数
-                      shouldShowPage:true, // 该参数用于设置某个操作按钮是否显示
-                      itemTexts: function (type, page, current) {
-                          switch (type) {
-                              case "first":
-                                  return "首页";
-                              case "prev":
-                                  return "上一页";
-                              case "next":
-                                  return "下一页";
-                              case "last":
-                                  return "末页";
-                              case "page":
-                                  return page;
-                          }
-                      },//点击事件，用于通过Ajax来刷新整个list列表
-                      onPageClicked: function (event, originalEvent, type, page){
-                       $("#mySallTable").empty().append(loading);
-                         startPageTemp_mySallOrder=page;
-                         $.post("${pageContext.request.contextPath}/mySallOrder",{startPage:page-1,pageSize:4},
-                        function(data){
-                         	 $("#mySallTable").empty().append(data);
-                          
-                       });
-                      }
-                  };
-				
-				  $('#pageLimit-mySallTable').bootstrapPaginator(options);
-				
-			 });
-})
-	  var startPageTemp_myBuyOrder=$("#startPageTemp-myBuyOrder").val();
-		$("#myBuyTable").empty().append(loading);
-		//copy 复制一份 post ajax 形式
-		   $.post("${pageContext.request.contextPath}/myBuyOrder",{startPage:0,pageSize:4},
-				   function(data){
-				
-			     $("#myBuyTable").empty().append(data);
-			    
-				var options = { 
-						bootstrapMajorVersion:3, //版本
-                      currentPage:startPageTemp_myBuyOrder, //当前页数
-                      totalPages:$("#totalPages-myBuyOrder").val(), //总页数
-                      size:"small",//设置控件的显示大小，是个字符串. 允许的值: mini, small, normal,large。值：mini版的、小号的、正常的、大号的。
-                      numberOfPages:5, //总页数,//设置分页每次显示的页数
-                      shouldShowPage:true, // 该参数用于设置某个操作按钮是否显示
-                      itemTexts: function (type, page, current) {
-                          switch (type) {
-                              case "first":
-                                  return "首页";
-                              case "prev":
-                                  return "上一页";
-                              case "next":
-                                  return "下一页";
-                              case "last":
-                                  return "末页";
-                              case "page":
-                                  return page;
-                          }
-                      },//点击事件，用于通过Ajax来刷新整个list列表
-                      onPageClicked: function (event, originalEvent, type, page){
-                       $("#myBuyTable").empty().append(loading);
-                         startPageTemp_myBuyOrder=page;
-                         $.post("${pageContext.request.contextPath}/myBuyOrder",{startPage:page-1,pageSize:4},
-                        function(data){
-                         	 $("#myBuyTable").empty().append(data);
-                          
-                       });
-                      }
-                  };
-				
-				  $('#pageLimit-myBuyTable').bootstrapPaginator(options);
-				
-			 });
+	<%--var startPageTemp_myRelease=$("#startPageTemp-myRelease").val();--%>
+	<%--$("#box_userGoods").empty().append(loading);--%>
+	<%--//copy 复制一份 post ajax 形式--%>
+	   <%--$.post("${pageContext.request.contextPath}/userGoods0",{startPage:0,pageSize:3},--%>
+			   <%--function(data){--%>
+			<%----%>
+		     <%--$("#box_userGoods").empty().append(data);--%>
+		    <%----%>
+			<%--var options = { --%>
+					<%--bootstrapMajorVersion:3, //版本--%>
+                  <%--currentPage:startPageTemp_myRelease, //当前页数--%>
+                  <%--totalPages:$("#totalPages-myRelease").val(), //总页数--%>
+                  <%--size:"small",//设置控件的显示大小，是个字符串. 允许的值: mini, small, normal,large。值：mini版的、小号的、正常的、大号的。--%>
+                  <%--numberOfPages:5, //总页数,//设置分页每次显示的页数--%>
+                  <%--shouldShowPage:true, // 该参数用于设置某个操作按钮是否显示--%>
+                  <%--itemTexts: function (type, page, current) {--%>
+                      <%--switch (type) {--%>
+                          <%--case "first":--%>
+                              <%--return "首页";--%>
+                          <%--case "prev":--%>
+                              <%--return "上一页";--%>
+                          <%--case "next":--%>
+                              <%--return "下一页";--%>
+                          <%--case "last":--%>
+                              <%--return "末页";--%>
+                          <%--case "page":--%>
+                              <%--return page;--%>
+                      <%--}--%>
+                  <%--},//点击事件，用于通过Ajax来刷新整个list列表--%>
+                  <%--onPageClicked: function (event, originalEvent, type, page){--%>
+                   <%--$("#box_userGoods").empty().append(loading);--%>
+                     <%--startPageTemp_myRelease=page;--%>
+                     <%--$.post("${pageContext.request.contextPath}/userGoods0",{startPage:page-1,pageSize:3},--%>
+                    <%--function(data){--%>
+                     	 <%--$("#box_userGoods").empty().append(data);--%>
+                      <%----%>
+                   <%--});--%>
+                  <%--}--%>
+              <%--};--%>
+			<%----%>
+			  <%--$('#pageLimit-myRelease').bootstrapPaginator(options);--%>
+			<%----%>
+		 <%--});--%>
+
+	<%----%>
+	<%----%>
+ <%--var startPageTemp_shopcat=$("#startPageTemp-shopcat").val();--%>
+		<%--$("#myShopCatTable").empty().append(loading);--%>
+		<%--//copy 复制一份 post ajax 形式--%>
+		   <%--$.post("${pageContext.request.contextPath}/shopcatGoods",{startPage:0,pageSize:4},--%>
+				   <%--function(data){--%>
+				<%----%>
+			     <%--$("#myShopCatTable").empty().append(data);--%>
+			    <%----%>
+				<%--var options = { --%>
+						<%--bootstrapMajorVersion:3, //版本--%>
+                      <%--currentPage:startPageTemp_shopcat, //当前页数--%>
+                      <%--totalPages:$("#totalPages-shopcat").val(), //总页数--%>
+                      <%--size:"small",//设置控件的显示大小，是个字符串. 允许的值: mini, small, normal,large。值：mini版的、小号的、正常的、大号的。--%>
+                      <%--numberOfPages:5, //总页数,//设置分页每次显示的页数--%>
+                      <%--shouldShowPage:true, // 该参数用于设置某个操作按钮是否显示--%>
+                      <%--itemTexts: function (type, page, current) {--%>
+                          <%--switch (type) {--%>
+                              <%--case "first":--%>
+                                  <%--return "首页";--%>
+                              <%--case "prev":--%>
+                                  <%--return "上一页";--%>
+                              <%--case "next":--%>
+                                  <%--return "下一页";--%>
+                              <%--case "last":--%>
+                                  <%--return "末页";--%>
+                              <%--case "page":--%>
+                                  <%--return page;--%>
+                          <%--}--%>
+                      <%--},//点击事件，用于通过Ajax来刷新整个list列表--%>
+                      <%--onPageClicked: function (event, originalEvent, type, page){--%>
+                       <%--$("#myShopCatTable").empty().append(loading);--%>
+                         <%--startPageTemp_shopcat=page;--%>
+                         <%--$.post("${pageContext.request.contextPath}/shopcatGoods",{startPage:page-1,pageSize:4},--%>
+                        <%--function(data){--%>
+                         	 <%--$("#myShopCatTable").empty().append(data);--%>
+                          <%----%>
+                       <%--});--%>
+                      <%--}--%>
+                  <%--};--%>
+				<%----%>
+				  <%--$('#pageLimit-myShopCat').bootstrapPaginator(options);--%>
+				<%----%>
+			 <%--});--%>
+	<%----%>
+ <%--var startPageTemp=$("#startPageTemp").val();--%>
+		<%--$("#myTable").empty().append(loading);--%>
+		<%--//copy 复制一份 post ajax 形式--%>
+		   <%--$.post("${pageContext.request.contextPath}/myCollectGoods",{startPage:0,pageSize:4},--%>
+				   <%--function(data){--%>
+				<%----%>
+			     <%--$("#myTable").empty().append(data);--%>
+			    <%----%>
+				<%--var options = { --%>
+						<%--bootstrapMajorVersion:3, //版本--%>
+                      <%--currentPage:startPageTemp, //当前页数--%>
+                      <%--totalPages:$("#totalPages").val(), //总页数--%>
+                      <%--size:"small",//设置控件的显示大小，是个字符串. 允许的值: mini, small, normal,large。值：mini版的、小号的、正常的、大号的。--%>
+                      <%--numberOfPages:5, //总页数,//设置分页每次显示的页数--%>
+                      <%--shouldShowPage:true, // 该参数用于设置某个操作按钮是否显示--%>
+                      <%--itemTexts: function (type, page, current) {--%>
+                          <%--switch (type) {--%>
+                              <%--case "first":--%>
+                                  <%--return "首页";--%>
+                              <%--case "prev":--%>
+                                  <%--return "上一页";--%>
+                              <%--case "next":--%>
+                                  <%--return "下一页";--%>
+                              <%--case "last":--%>
+                                  <%--return "末页";--%>
+                              <%--case "page":--%>
+                                  <%--return page;--%>
+                          <%--}--%>
+                      <%--},//点击事件，用于通过Ajax来刷新整个list列表--%>
+                      <%--onPageClicked: function (event, originalEvent, type, page){--%>
+                       <%--$("#myTable").empty().append(loading);--%>
+                         <%--startPageTemp=page;--%>
+                         <%--$.post("${pageContext.request.contextPath}/myCollectGoods",{startPage:page-1,pageSize:4},--%>
+                        <%--function(data){--%>
+                         	 <%--$("#myTable").empty().append(data);--%>
+                          <%----%>
+                       <%--});--%>
+                      <%--}--%>
+                  <%--};--%>
+				<%----%>
+				  <%--$('#pageLimit').bootstrapPaginator(options);--%>
+				<%----%>
+			 <%--});--%>
+			  <%--var startPageTemp_mySallOrder=$("#startPageTemp-mySallOrder").val();--%>
+		<%--$("#mySallTable").empty().append(loading);--%>
+		<%--//copy 复制一份 post ajax 形式--%>
+		   <%--$.post("${pageContext.request.contextPath}/mySallOrder",{startPage:0,pageSize:4},--%>
+				   <%--function(data){--%>
+				<%----%>
+			     <%--$("#mySallTable").empty().append(data);--%>
+			    <%----%>
+				<%--var options = { --%>
+						<%--bootstrapMajorVersion:3, //版本--%>
+                      <%--currentPage:startPageTemp_mySallOrder, //当前页数--%>
+                      <%--totalPages:$("#totalPages-mySallOrder").val(), //总页数--%>
+                      <%--size:"small",//设置控件的显示大小，是个字符串. 允许的值: mini, small, normal,large。值：mini版的、小号的、正常的、大号的。--%>
+                      <%--numberOfPages:5, //总页数,//设置分页每次显示的页数--%>
+                      <%--shouldShowPage:true, // 该参数用于设置某个操作按钮是否显示--%>
+                      <%--itemTexts: function (type, page, current) {--%>
+                          <%--switch (type) {--%>
+                              <%--case "first":--%>
+                                  <%--return "首页";--%>
+                              <%--case "prev":--%>
+                                  <%--return "上一页";--%>
+                              <%--case "next":--%>
+                                  <%--return "下一页";--%>
+                              <%--case "last":--%>
+                                  <%--return "末页";--%>
+                              <%--case "page":--%>
+                                  <%--return page;--%>
+                          <%--}--%>
+                      <%--},//点击事件，用于通过Ajax来刷新整个list列表--%>
+                      <%--onPageClicked: function (event, originalEvent, type, page){--%>
+                       <%--$("#mySallTable").empty().append(loading);--%>
+                         <%--startPageTemp_mySallOrder=page;--%>
+                         <%--$.post("${pageContext.request.contextPath}/mySallOrder",{startPage:page-1,pageSize:4},--%>
+                        <%--function(data){--%>
+                         	 <%--$("#mySallTable").empty().append(data);--%>
+                          <%----%>
+                       <%--});--%>
+                      <%--}--%>
+                  <%--};--%>
+				<%----%>
+				  <%--$('#pageLimit-mySallTable').bootstrapPaginator(options);--%>
+				<%----%>
+			 <%--});--%>
+<%--})--%>
+	  <%--var startPageTemp_myBuyOrder=$("#startPageTemp-myBuyOrder").val();--%>
+		<%--$("#myBuyTable").empty().append(loading);--%>
+		<%--//copy 复制一份 post ajax 形式--%>
+		   <%--$.post("${pageContext.request.contextPath}/myBuyOrder",{startPage:0,pageSize:4},--%>
+				   <%--function(data){--%>
+				<%----%>
+			     <%--$("#myBuyTable").empty().append(data);--%>
+			    <%----%>
+				<%--var options = { --%>
+						<%--bootstrapMajorVersion:3, //版本--%>
+                      <%--currentPage:startPageTemp_myBuyOrder, //当前页数--%>
+                      <%--totalPages:$("#totalPages-myBuyOrder").val(), //总页数--%>
+                      <%--size:"small",//设置控件的显示大小，是个字符串. 允许的值: mini, small, normal,large。值：mini版的、小号的、正常的、大号的。--%>
+                      <%--numberOfPages:5, //总页数,//设置分页每次显示的页数--%>
+                      <%--shouldShowPage:true, // 该参数用于设置某个操作按钮是否显示--%>
+                      <%--itemTexts: function (type, page, current) {--%>
+                          <%--switch (type) {--%>
+                              <%--case "first":--%>
+                                  <%--return "首页";--%>
+                              <%--case "prev":--%>
+                                  <%--return "上一页";--%>
+                              <%--case "next":--%>
+                                  <%--return "下一页";--%>
+                              <%--case "last":--%>
+                                  <%--return "末页";--%>
+                              <%--case "page":--%>
+                                  <%--return page;--%>
+                          <%--}--%>
+                      <%--},//点击事件，用于通过Ajax来刷新整个list列表--%>
+                      <%--onPageClicked: function (event, originalEvent, type, page){--%>
+                       <%--$("#myBuyTable").empty().append(loading);--%>
+                         <%--startPageTemp_myBuyOrder=page;--%>
+                         <%--$.post("${pageContext.request.contextPath}/myBuyOrder",{startPage:page-1,pageSize:4},--%>
+                        <%--function(data){--%>
+                         	 <%--$("#myBuyTable").empty().append(data);--%>
+                          <%----%>
+                       <%--});--%>
+                      <%--}--%>
+                  <%--};--%>
+				<%----%>
+				  <%--$('#pageLimit-myBuyTable').bootstrapPaginator(options);--%>
+				<%----%>
+			 <%--});--%>
 
 
 		

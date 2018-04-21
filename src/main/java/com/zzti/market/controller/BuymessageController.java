@@ -1,7 +1,7 @@
 package com.zzti.market.controller;
 
 import javax.annotation.Resource;
-import com.zzti.market.entity.Result;
+import com.zzti.market.result.Result;
 import com.zzti.market.service.BuymessageService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,13 +40,13 @@ public class BuymessageController {
 		 buymessageService.ReleaseBuymessage(userId, buygoodsname, buygoodsdescrip, wantprice, wantsite, buyindate);
 		 return result;
 	}
-	//查询发布状态下的求购信息
+	//查询发布状�?�下的求购信�?
 	//@ResponseBody
 	//@RequestMapping("/allBuymessage0")
 	//public List<Buymessage> allBuymessage0() {
 	// buymessageService.allBuymessage(0);
 	//}
-	//查询过期状态下的求购信息
+	//查询过期状�?�下的求购信�?
 //
 //	@RequestMapping("/allBuymessage1")
 //	public List<Buymessage> allBuymessage1() {

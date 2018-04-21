@@ -109,7 +109,7 @@
         </div>
         <div class="lf fmc-box">
             <h3 class="clearfix"><span class="lf">发布商品</span> <a class="rt" href="javascript:;">我的商品</a></h3>
-            <form action="${pageContext.request.contextPath}/release" enctype="multipart/form-data" method="post"  onsubmit="return Check()">
+            <form action="${pageContext.request.contextPath}/release" enctype="multipart/form-data" method="post"  onsubmit="return Check()" id="form1">
                 <input id="userId" type="hidden" value="<%=userId %>" name="userId"/>
                 <input id="token" type="hidden" value="<%=token %>"  name="token"/>
                 <div class="clearfix">
@@ -207,6 +207,7 @@
 </footer>
 <script src="js/jquery-1.11.3.js"></script>
 <script src="js/main.js"></script>
+<script src="js/jquery.form.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(function(){
 
@@ -257,12 +258,14 @@
             alert("请补充完整商品信息！");
             return false;
         }
+        $('#form1').ajaxSubmit(function(data){
+            //如果成功跳转到我的发布  ---商品详情界面
 
-        else{
-            alert("发布成功!");
-            return true;
-        }
+
+        });
+        return false;//这里必须要返回false，不然依然会跳转。
     }
+
 
 
 

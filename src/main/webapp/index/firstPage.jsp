@@ -124,11 +124,18 @@
 		var startPageTemp=$("#startPageTemp").val();
 		$("#box").empty().append(loading);
 		//copy 复制一份 post ajax 形式
-		   $.post("${pageContext.request.contextPath}/allGoods0",{startPage:0,pageSize:20},
+		   $.post("${pageContext.request.contextPath}/getGoodsPage",{startPage:0,pageSize:20,status:0},
 				   function(data){
-				
-			     $("#box").empty().append(data);
-			    
+		       var dataList=data.data;
+
+               var li=	"<li  class='goods'>"+
+                           "<img onclick='goodsdetail('${goods.goodsid}')\"' src='' alt='商品图片' id='img_good'/>"+
+                           "<b>￥50</b>"+
+                           "<span>name</span>"+
+                           "<span class='belong-somebody'>商品持有人：username</span>"+
+                       " <a  onclick=price class='connect'>联系卖家</a><a class='b_cart'' onclick='addShopCat('${goods.goodsid}')'>加入购物车</a></li>";
+			     $("#box").empty().append(li);
+
 				var options = { 
 						bootstrapMajorVersion:3, //版本
                       currentPage:startPageTemp, //当前页数
