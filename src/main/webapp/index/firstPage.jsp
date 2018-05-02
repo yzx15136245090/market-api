@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<% String path = request.getContextPath();
+    String socketPath = request.getServerName()+":"+request.getServerPort()+path;%>
 <html>
 <head lang="en">
     <title>old的驿站</title>
@@ -75,6 +76,7 @@
     </div>
 
 </div>
+<%--//轮播图--%>
 <div id="slider">
     <ul id="imgs">
   
@@ -82,17 +84,24 @@
     <ul id="indexs">
     </ul>
 </div>
-<div id="hot_recommended">
-    <span class="lf">热门推荐 Hot recommend</span>
-    <a href="#"class="rt">更多商品></a>
+<%--推荐商品展示--%>
+<div id="hot_div">
+<div id="hot_recommended" style="border-style: none solid  solid solid;">
+    <span class="lf">精品推荐 Hot recommend</span>
+    <a href="#"class="rt" onclick="chat()">更多商品></a>
 </div>
+<div id="product_hot">
+    <ul id="hot_box">
+
+    </ul>
+</div>
+</div>
+
+<%--//首页商品展示--%>
 <div id="product_show">
     <ul id="box">
   
     </ul>
-    
-
- 
 
 </div>
     <%--分页 --%>
@@ -118,26 +127,50 @@
 <script src="${pageContext.request.contextPath}/index/js/public.js"></script>
 <script src="${pageContext.request.contextPath}/index/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/index/js/bootstrap-paginator.min.js"></script>
-<script type="text/javascript">			
-		$(function(){
-			var loading="";
-		var startPageTemp=$("#startPageTemp").val();
-		$("#box").empty().append(loading);
-		//copy 复制一份 post ajax 形式
-		   $.post("${pageContext.request.contextPath}/getGoodsPage",{startPage:0,pageSize:20,status:0},
-				   function(data){
-		       var dataList=data.data;
+<script src="${pageContext.request.contextPath}/index/js/WebScoket.js"></script>
+<script type="text/javascript">
 
+  /*  function chat() {
+        var webSocket = new WebSocket("ws://localhost:8180/ws");
+        webSocket.onopen = function(event){
+           alert("success");
+        };
+        webSocket.onerror = function(event){
+           alert("error");
+        };
+        webSocket.onclose = function(event){
+           alert("close");
+        };
+        webSocket.onmessage = function(event){
+
+        }
+    }*/
+
+		$(function(){
+		var startPageTemp=$("#startPageTemp").val();
+		//copy 复制一份 post ajax 形式
+            debugger;
+            $("#box").empty();
+		   $.post("${pageContext.request.contextPath}/getGoodsPage",
+                  {startPage:0,
+                   pageSize:10,
+                   status:'0'},
+				   function(data){
+		       debugger;
+		       var dataList=data.data;
+                       debugger;
+		       for(var i in  dataList){
+                  var goodsid=dataList[i].goodsid;
                var li=	"<li  class='goods'>"+
-                           "<img onclick='goodsdetail('${goods.goodsid}')\"' src='' alt='商品图片' id='img_good'/>"+
-                           "<b>￥50</b>"+
-                           "<span>name</span>"+
-                           "<span class='belong-somebody'>商品持有人：username</span>"+
-                       " <a  onclick=price class='connect'>联系卖家</a><a class='b_cart'' onclick='addShopCat('${goods.goodsid}')'>加入购物车</a></li>";
-			     $("#box").empty().append(li);
+                           "<img onclick='' src='"+dataList[i].goodspicture[0].pictureurl+ "'alt='商品图片' id='img_good'/>"+
+                   "<span>"+dataList[i].goodsname+"</span>"+
+                   "<b>￥"+dataList[i].price+"</b></li>";
+			     $("#box").append(li);
+			     $("#hot_box").append(li);
+                       }
 
 				var options = { 
-						bootstrapMajorVersion:3, //版本
+                      bootstrapMajorVersion:3, //版本
                       currentPage:startPageTemp, //当前页数
                       totalPages:$("#totalPages").val(), //总页数
                       size:"small",//设置控件的显示大小，是个字符串. 允许的值: mini, small, normal,large。值：mini版的、小号的、正常的、大号的。
@@ -162,8 +195,16 @@
                          startPageTemp=page;
                          $.post("${pageContext.request.contextPath}/allGoods0",{startPage:page-1,pageSize:20},
                         function(data){
-                         	 $("#box").empty().append(data);
-                          
+                         	 $("#box").empty();
+                            for(var i in  dataList){
+                                var goodsid=dataList[i].goodsid;
+                                var li=	"<li  class='goods'>"+
+                                    "<img onclick='' src='"+dataList[i].goodspicture[0].pictureurl+ "'alt='商品图片' id='img_good'/>"+
+                                    "<span>"+dataList[i].goodsname+"</span>"+
+                                    "<b>￥"+dataList[i].price+"</b></li>";
+                                $("#box").append(li);
+                                $("#hot_box").append(li);
+                            }
                        });
                       }
                   };

@@ -59,11 +59,7 @@ public class UserConller {
         String returnMes=userService.login(user);
         JSONObject rejson=JSONObject.fromObject(returnMes);
         if("1".equals(rejson.get("statusCode"))) {
-            Map seMap = new HashMap();
-            String token = rejson.getString("token");
-            seMap.put("token", token);
-            seMap.put("userId", userId);
-            session.setAttribute("userMap", seMap);
+            session.setAttribute("user", user);
         }
         return  returnMes;
     }
@@ -129,11 +125,11 @@ public class UserConller {
         }
     }*/
 
+   @RequestMapping("/checkLogin")
     public Result checklogin(){
         result=new Result();
-        Map userMap= (Map) session.getAttribute("userMap");
-        String mytoken=userMap.get("token").toString();
-        String myuserId=userMap.get("userId").toString();
+        User user= (User) session.getAttribute("user");
+        String myuserId=user.getUserId();
         result.setData(userService.getUserInfo(myuserId));
         return result;
     }

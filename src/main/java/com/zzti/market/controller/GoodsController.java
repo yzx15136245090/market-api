@@ -9,14 +9,12 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.zzti.market.entity.*;
-import com.zzti.market.enums.CommonStatus;
 import com.zzti.market.result.*;
 import com.zzti.market.enums.ResultType;
 import com.zzti.market.service.GoodsService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -131,8 +129,8 @@ public class GoodsController {
 				String sd=System.getProperty("user.dir");
 				String p1 = request.getSession().getServletContext().getRealPath("");
 				String path=p1.substring(0,p1.lastIndexOf(ddd));
-				String path2=path.substring(0,p1.lastIndexOf(ddd));
-			//	String path=sd+ddd+"picture";
+				String path2=path.substring(0,path.lastIndexOf(ddd));
+				//	String path=sd+ddd+"picture";
 				String file=path2+ddd+"picture"+ddd+picname;
 				try {
 					cms[i].transferTo(new File(file));
@@ -182,6 +180,41 @@ public class GoodsController {
         pageResult.setCount(count);
         return  pageResult;
     }
+
+    /**
+     * @method getGoodsDetail
+     * @Author: zhixiang.yang
+     * @Description: 获取商品详情
+     * @Date: 9:51 2018/4/23
+     * @param goodsid
+     * @return: com.zzti.market.result.Result
+     * @respbody:
+     */
+    @RequestMapping("/getGoodsDetail")
+    public Result getGoodsDetail(String goodsid){
+        result=new Result();
+
+
+
+        return  result;
+    }
+    /**
+     * @method updateGoodsStasus
+     * @Author: zhixiang.yang
+     * @Description:  下架商品
+     * @Date: 9:51 2018/4/23
+     * @param goodsid
+     * @return: com.zzti.market.result.Result
+     * @respbody:
+     */
+    @RequestMapping("/updateGoodsStasus")
+    public Result updateGoodsStasus(String  goodsid){
+        result=new Result();
+
+        return  result;
+    }
+
+
 
 //	@RequestMapping("/allGoods0")
 //	public String allGoods0(HttpSession session,Model model,int startPage,int  pageSize,HttpServletRequest request) {

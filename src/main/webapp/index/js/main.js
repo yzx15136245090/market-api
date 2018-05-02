@@ -116,13 +116,14 @@ $(function(){
 
 function  islogin(){
 	
-	$.post("/old/manager/islogin",{},function(data){
+	$.post("/checkLogin",{},function(data){
 
+	    debugger;
 		if(data==1){
 			alert("请先登录！");
 			document.getElementById("toLogin").click();
 		return "no";
-			
+
 		}
 			else{
 				return false;

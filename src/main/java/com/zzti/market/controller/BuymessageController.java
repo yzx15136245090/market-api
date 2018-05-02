@@ -1,9 +1,13 @@
 package com.zzti.market.controller;
 
 import javax.annotation.Resource;
+
+import com.zzti.market.enums.ResultType;
+import com.zzti.market.result.PageResult;
 import com.zzti.market.result.Result;
 import com.zzti.market.service.BuymessageService;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -13,6 +17,8 @@ public class BuymessageController {
 	BuymessageService buymessageService;
 
 	private  Result result;
+
+	private PageResult pageResult;
 
 	/**
      * @method ReleaseBuymessage
@@ -40,25 +46,33 @@ public class BuymessageController {
 		 buymessageService.ReleaseBuymessage(userId, buygoodsname, buygoodsdescrip, wantprice, wantsite, buyindate);
 		 return result;
 	}
-	//查询发布状�?�下的求购信�?
-	//@ResponseBody
-	//@RequestMapping("/allBuymessage0")
-	//public List<Buymessage> allBuymessage0() {
-	// buymessageService.allBuymessage(0);
-	//}
-	//查询过期状�?�下的求购信�?
-//
-//	@RequestMapping("/allBuymessage1")
-//	public List<Buymessage> allBuymessage1() {
-//		return buymessageService.allBuymessage(1);
-//	}
-//	@RequestMapping("/allBuymessage0")
-//	public String allBuymessage0(HttpSession session,Model model,int startPage,int  pageSize) {
-//		List<Buymessage> buymessageList=buymessageService.allBuymessage(0, startPage, pageSize);
-//		int totalPages = buymessageService.findBuymessageNumber(0); //
-//		model.addAttribute("buymessageList", buymessageList);
-//		model.addAttribute("totalPages", (totalPages/pageSize)+(totalPages%pageSize==0?0:1));
-//
-//		return "buymessageData";
-//	}
+
+	/**
+	 * @method getBuyMessagePage
+	 * @Author: zhixiang.yang
+	 * @Description: 分页查询求购信息
+	 * @Date: 16:36 2018/4/25
+	 * @param userId         用户id  |String |非必输，查询我的求购时需要输入
+	 * @param startPage
+	 * @param pageSize
+	 * @param buystatus			求购信息状态  | 0 为有效  app 传 0
+	 * @return: com.zzti.market.result.PageResult
+	 * @respbody:
+	 */
+	@RequestMapping("/getBuyMessagePage")
+	public PageResult getBuyMessagePage(@RequestParam(required = false) String userId,
+										@RequestParam(required = true) Integer startPage,
+										@RequestParam(required = true) Integer pageSize,
+										@RequestParam(required = true) Integer buystatus){
+		pageResult=new PageResult();
+		if(startPage==null||pageSize==null||buystatus==null)
+		{
+			pageResult.setCode(ResultType.RESULT_ERROR.getStatus());
+			pageResult.setMessage("参数不正确");
+			return  pageResult;
+		}
+		pageResult.setData(buymessageService.getBuymessage(userId, startPage, pageSize, buystatus));
+		pageResult.setCount(buymessageService.getCountBuymessage(userId,buystatus));
+		return pageResult;
+	}
 }

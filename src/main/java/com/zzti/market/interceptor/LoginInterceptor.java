@@ -1,5 +1,6 @@
 package com.zzti.market.interceptor;
 
+import com.zzti.market.entity.User;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,23 +27,23 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
        String requestUrl=request.getRequestURI();
         HttpSession session=request.getSession();
-        Map userMap=(Map)session.getAttribute("userMap");
-        if(userMap==null){
+        User user=(User)session.getAttribute("user");
+        if(user==null){
             System.out.println("no user login");
             PrintWriter out = response.getWriter();
             out.print("-1");
             return  false;
         }
         String SS=request.getParameter("token");
-        String token=userMap.get("token").toString();
-        if("".equals(request.getParameter("token"))||request.getParameter("token")==null) {
-            System.out.println("please login");
-            PrintWriter out = response.getWriter();
-            out.print("-1");
-            return false;
-        }else if(token.equals(request.getParameter("token"))){
-            return true;
-        }
+//        String token=user.get("token").toString();
+//        if("".equals(request.getParameter("token"))||request.getParameter("token")==null) {
+//            System.out.println("please login");
+//            PrintWriter out = response.getWriter();
+//            out.print("-1");
+//            return false;
+////        }else if(token.equals(request.getParameter("token"))){
+////            return true;
+////        }
         return  true;
     }
 

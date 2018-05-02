@@ -293,11 +293,11 @@ img{
 #product_show ul li{
     float:left;
     width:224px;
-    height:344px;
+    height:280px;
     overflow: hidden;
     box-sizing: border-box;
     padding:10px;
-    border:2px solid #999999;
+    border:1px solid #999999;
     margin:0 18px 20px 0;
 }
 #product_show ul li:hover{
@@ -316,6 +316,7 @@ img{
 #product_show b{
     display: block;
     width:100%;
+    margin-left: 30%;
 }
 #product_show ul li span.belong-somebody{
     font-size: 12px;
@@ -330,7 +331,9 @@ img{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    line-height: 24px;
+    line-height: 33px;
+    font-size: 22px;
+    margin-left: 30%;
 }
 #product_show li a{
     text-align: right;
@@ -1004,7 +1007,7 @@ footer{
     padding:20px 0;
     width: 100%;
     height: 100px;
-    background: url(/images/bottombg.png);
+    background: url(../images/bottombg.png);
 }
 footer span{
     display: block;
@@ -1078,4 +1081,60 @@ footer span a{
     font-size: 30px;
     color:#f90208;
     height:80px
+}
+
+#product_hot{
+    width: 100%;
+    height: 300px;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+}
+#hot_box b{
+    font-size: 30px;
+    color: #f90208;
+}
+#product_hot #hot_box{
+width: 1200px;
+    margin: 0 auto;
+}
+#hot_div #product_hot ul li {
+    float: left;
+    width: 224px;
+    height: 280px;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 2px solid #999999;
+    margin: 0 18px 20px 0;
+}
+#hot_div #product_hot #hot_box ul {
+    overflow: hidden;
+    margin-top: 20px;
+}
+ #product_hot ul li img {
+    width: 200px;
+    height: 200px;
+}
+#hot_div #product_hot b {
+    display: block;
+    margin-left: 30%;
+}
+#hot_box span {
+    display: block;
+    height: 24px;
+    width: 100%;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 33px;
+    font-size: 22px;
+    margin-left: 30%;
+}
+#hot_recommended{
+    display: block;
+}
+#hot_div{
+    height: 360px;
 }
